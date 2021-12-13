@@ -1,66 +1,52 @@
-package com.example.weather;
-import android.app.IntentService;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.os.ResultReceiver;
-import android.text.TextUtils;
-import androidx.annotation.Nullable;
+package com.example.weather
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import android.app.IntentService
+import android.content.Intent
+import android.location.Location
+import android.location.Geocoder
+import android.location.Address
+import java.lang.Exception
+import android.text.TextUtils
+import android.os.Bundle
+import android.os.ResultReceiver
+import java.util.*
 
-public class FetchAddressInternetService extends IntentService {
-
-    private ResultReceiver resultReceiver;
-
-    public FetchAddressInternetService () {
-        super("FetchAddressInternetService");
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+class FetchAddressInternetService : IntentService("FetchAddressInternetService") {
+    private var resultReceiver: ResultReceiver? = null
+    override fun onHandleIntent(intent: Intent?) {
         if (intent != null) {
-            String errorMessage ="";
-            resultReceiver =  intent.getParcelableExtra(Constants.RECEIVER);
-            Location location = intent.getParcelableExtra(Constants.LOCATION_DATA_EXTRA);
-            if (location == null) {
-                return;
-            }
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = null;
+            var errorMessage = ""
+            resultReceiver = intent.getParcelableExtra(Constants.RECEIVER)
+            val location = intent.getParcelableExtra<Location>(Constants.LOCATION_DATA_EXTRA) ?: return
+            val geocoder = Geocoder(this, Locale.getDefault())
+            var addresses: List<Address>? = null
             try {
-                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            } catch (Exception e) {
-                errorMessage = e.getMessage();
+                addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
             }
             if (addresses == null || addresses.isEmpty()) {
-                deliveryResultReceiver(Constants.FAILURE_RESULT, errorMessage);
+                deliveryResultReceiver(Constants.FAILURE_RESULT, errorMessage)
             } else {
-                Address address = addresses.get(0);
-                ArrayList<String> addressFragments = new ArrayList<>();
-                for (int i = 0; i <= address.getMaxAddressLineIndex() ; i++) {
-                    addressFragments.add(address .getAddressLine(i));
+                val address = addresses[0]
+                val addressFragments = ArrayList<String?>()
+                for (i in 0..address.maxAddressLineIndex) {
+                    addressFragments.add(address.getAddressLine(i))
                 }
-
                 deliveryResultReceiver(
-                        Constants.SUCCESS_RESULT,
-                        TextUtils.join(
-                                Objects.requireNonNull(System.getProperty("line.separator")),
-                                addressFragments
-                        )
-                );
+                    Constants.SUCCESS_RESULT,
+                    TextUtils.join(
+                        Objects.requireNonNull(System.getProperty("line.separator")),
+                        addressFragments
+                    )
+                )
             }
         }
     }
 
-    private void deliveryResultReceiver(int resultCode, String addressMessage) {
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.RESULT_DATA_KEY, addressMessage);
-        resultReceiver.send(resultCode, bundle);
+    private fun deliveryResultReceiver(resultCode: Int, addressMessage: String?) {
+        val bundle = Bundle()
+        bundle.putString(Constants.RESULT_DATA_KEY, addressMessage)
+        resultReceiver!!.send(resultCode, bundle)
     }
 }
