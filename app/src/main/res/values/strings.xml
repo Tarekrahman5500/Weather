@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Weather</string>
     <string name="get_location">Get Location</string>
+    <string name="location">Location</string>
+    <string name="update_at">Update at</string>
+    <string name="sky">Clear Sky</string>
+    <string name="temprature">24℃</string>
+    <string name="min_temp">Min Temp</string>
+    <string name="max_temp">Max Temp</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="todo">TODO</string>
+    <string name="sunset">Sunset</string>
+    <string name="wind">Wind</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="_06_40_am">06:40 AM</string>
+    <string name="created_by">Created By</string>
 </resources>

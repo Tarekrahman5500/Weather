@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size">24sp</dimen>
+    <item name="line_space" type="dimen" format="float">1.2</item>
+</resources>

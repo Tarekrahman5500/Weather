@@ -7,4 +7,5 @@ internal object Constants {
     const val LOCATION_DATA_EXTRA = "$PACKAGE_NAME.LOCATION_DATA_EXTRA"
     const val SUCCESS_RESULT = 1
     const val FAILURE_RESULT = 0
+    const val API_KEY = "b3e4b6983f5f6efe30cf9270622a8529"
 }

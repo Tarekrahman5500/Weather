@@ -6,22 +6,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
+        android:background="@drawable/gradient_bg"
         tools:context=".MainActivity">
     <android.widget.Button
             android:text="@string/get_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/buttonGetCurrentLocation"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"/>
+            android:backgroundTint="@color/equal"
+            android:textColor="@color/white"
+            style="?android:attr/buttonBarButtonStyle" android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
+            android:background="@drawable/circle"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp" android:textAllCaps="false" android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/currentAddress"
+            app:layout_constraintEnd_toEndOf="@+id/currentAddress"/>
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             android:layout_marginTop="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/buttonGetCurrentLocation"
             app:layout_constraintStart_toStartOf="@+id/buttonGetCurrentLocation"
             app:layout_constraintEnd_toEndOf="@+id/buttonGetCurrentLocation"/>
@@ -33,7 +39,7 @@
             android:layout_marginTop="24dp"
             android:textSize="24sp" android:textStyle="bold" android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp" android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="16dp" android:layout_marginEnd="8dp" android:visibility="gone"/>
     <TextView
             android:text="TextView"
             android:layout_width="0dp"
@@ -42,5 +48,155 @@
             android:layout_marginTop="32dp"
             android:textSize="24sp" android:textStyle="bold" android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+            android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:visibility="gone"/>
+    <TextView
+            android:text="@string/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/currentAddress"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar"
+            android:layout_marginTop="16dp" android:textSize="20sp"
+            style="@style/WhiteBox"
+            app:layout_constraintEnd_toEndOf="@+id/updateAt" app:layout_constraintStart_toStartOf="@+id/updateAt"/>
+    <TextView
+            android:text="@string/update_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/updateAt"
+            app:layout_constraintTop_toBottomOf="@+id/currentAddress"
+            android:layout_marginTop="16dp"
+            style="@style/WhiteBox" app:layout_constraintEnd_toEndOf="@+id/status"
+            app:layout_constraintStart_toStartOf="@+id/status"/>
+    <TextView
+            android:text="@string/sky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/status"
+            app:layout_constraintTop_toBottomOf="@+id/updateAt"
+            android:layout_marginTop="48dp"
+            android:textSize="16sp" style="@style/WhiteBox" app:layout_constraintStart_toStartOf="@+id/temp"
+            app:layout_constraintEnd_toEndOf="@+id/temp"/>
+    <TextView
+            android:text="@string/temprature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/temp"
+            app:layout_constraintTop_toBottomOf="@+id/status"
+            android:layout_marginTop="40dp"
+            style="@style/WhiteBox" android:textSize="90sp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+            android:text="@string/min_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/temp_min"
+            style="@style/WhiteBox" app:layout_constraintTop_toBottomOf="@+id/temp"
+            android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="@+id/temp"/>
+    <Space
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/temp_min"
+            app:layout_constraintTop_toTopOf="@+id/temp_min"
+            app:layout_constraintVertical_bias="0.368" android:id="@+id/space"
+            app:layout_constraintStart_toEndOf="@+id/temp_min" app:layout_constraintEnd_toStartOf="@+id/temp_max"/>
+    <TextView
+            android:text="@string/max_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/temp_max"
+            app:layout_constraintEnd_toEndOf="@+id/temp"
+            app:layout_constraintTop_toBottomOf="@+id/temp" android:layout_marginTop="16dp" style="@style/WhiteBox"/>
+    <LinearLayout android:id="@+id/detailsContainer" android:layout_width="match_parent"
+                  android:layout_height="wrap_content" android:orientation="vertical"
+                  app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/space"
+                  android:layout_marginTop="24dp" android:background="@color/gray_bg"
+                  android:layout_alignParentBottom="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="horizontal" android:weightSum="3">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                          android:orientation="vertical" android:layout_weight="1"
+                          android:gravity="center" android:padding="8dp"
+                          android:background="#3CF1EBF1">
+                <ImageView android:layout_width="25dp" android:layout_height="25dp"
+                           android:src="@drawable/sunrise" android:tint="#FFFFFF" android:contentDescription="@string/todo"/>
+                <Space android:layout_width="wrap_content" android:layout_height="5dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:textSize="12sp" android:text="@string/sunrise" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+                <TextView android:id="@+id/sunrise" android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" android:textSize="14sp"
+                          android:text="@string/_06_40_am" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+            </LinearLayout>
+            <Space android:layout_width="10dp" android:layout_height="wrap_content"/>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                          android:orientation="vertical" android:layout_weight="1"
+                          android:gravity="center" android:padding="8dp"
+                          android:background="#3CF1EBF1">
+                <ImageView android:layout_width="25dp" android:layout_height="25dp"
+                           android:src="@drawable/sunset" android:tint="#FFFFFF"
+                           android:contentDescription="@string/todo"/>
+                <Space android:layout_width="wrap_content" android:layout_height="5dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:textSize="12sp" android:text="@string/sunset" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+                <TextView android:id="@+id/sunset" android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" android:textSize="14sp"
+                          android:text="@string/_06_40_am" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+            </LinearLayout>
+            <Space android:layout_width="10dp" android:layout_height="wrap_content"/>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                          android:orientation="vertical" android:layout_weight="1"
+                          android:gravity="center" android:padding="8dp"
+                          android:background="#3CF1EBF1">
+                <ImageView android:layout_width="25dp" android:layout_height="25dp"
+                           android:src="@drawable/wind" android:tint="#FFFFFF"
+                           android:contentDescription="@string/todo"/>
+                <Space android:layout_width="wrap_content" android:layout_height="5dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:textSize="12sp" android:text="@string/wind" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+                <TextView android:id="@+id/wind" android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" android:textSize="14sp"
+                          android:text="@string/_06_40_am" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space android:layout_width="wrap_content" android:layout_height="10dp"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="horizontal" android:weightSum="3">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                          android:orientation="vertical" android:layout_weight="1"
+                          android:gravity="center" android:padding="8dp"
+                          android:background="#3CF1EBF1">
+                <ImageView android:layout_width="25dp" android:layout_height="25dp"
+                           android:src="@drawable/pressure" android:tint="#FFFFFF"
+                           android:contentDescription="@string/todo"/>
+                <Space android:layout_width="wrap_content" android:layout_height="5dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:textSize="12sp" android:text="@string/pressure" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+                <TextView android:id="@+id/pressure" android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" android:textSize="14sp"
+                          android:text="@string/_06_40_am" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+            </LinearLayout>
+            <Space android:layout_width="10dp" android:layout_height="wrap_content"/>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                          android:orientation="vertical" android:layout_weight="1"
+                          android:gravity="center" android:padding="8dp"
+                          android:background="#3CF1EBF1">
+                <ImageView android:layout_width="25dp" android:layout_height="25dp"
+                           android:src="@drawable/humidity" android:tint="#FFFFFF"
+                           android:contentDescription="@string/todo"/>
+                <Space android:layout_width="wrap_content" android:layout_height="5dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:textSize="12sp" android:text="@string/humidity" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+                <TextView android:id="@+id/humidity" android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" android:textSize="14sp"
+                          android:text="@string/_06_40_am" android:textColor="@color/black"
+                          android:fontFamily="@font/roboto"/>
+            </LinearLayout>
+            <Space android:layout_width="10dp" android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
